@@ -25,7 +25,7 @@ const ListTopic: React.FC<ListTopicProps> = ({ imageUrl, title, createdBy, descr
         bodyStyle={{ padding: 0 }}
       >
         <Row gutter={[16, 16]} align="middle">
-          {/* Image Column */}
+    
           <Col xs={24} sm={8} md={6} lg={6} xl={6} style={{ display: "flex", justifyContent: "center" }}>
             <div
               style={{
