@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Typography, Button, Switch, Flex, Grid } from "antd";
 import { PlusOutlined, LogoutOutlined } from "@ant-design/icons";
 import TopicModal from "./TopicModal";
+import useLogout from "../hooks/useLogout"; // Import useLogout
 
 const { Title } = Typography;
 const { useBreakpoint } = Grid;
@@ -10,17 +11,18 @@ const Header: React.FC = () => {
   const [language, setLanguage] = useState("en");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const screens = useBreakpoint();
+  const { logout } = useLogout();
 
   const handleLanguageChange = (checked: boolean) => {
     setLanguage(checked ? "it" : "en");
   };
 
-  const showModal = () => setIsModalVisible(true); 
-  const handleClose = () => setIsModalVisible(false); 
+  const showModal = () => setIsModalVisible(true);
+  const handleClose = () => setIsModalVisible(false);
 
   const handleSubmit = (values: { title: string; description: string }) => {
     console.log("Submitted:", values);
-    setIsModalVisible(false); 
+    setIsModalVisible(false);
   };
 
   return (
@@ -108,6 +110,7 @@ const Header: React.FC = () => {
               marginRight: "20px",
             }}
             className="hover-scale"
+            onClick={logout} 
           >
             {!screens.xs && "Logout"}
           </Button>

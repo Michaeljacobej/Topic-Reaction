@@ -1,23 +1,62 @@
 import React from "react";
-import type { FormProps } from "antd";
 import { Button, Card, Checkbox, Form, Input, Typography } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import useLogin from "../hooks/useLogin";
+// import Loading from "../components/Loading";
 
 const { Title, Text } = Typography;
 
-type FieldType = {
-  email?: string;
-  password?: string;
-  remember?: boolean;
+const Login: React.FC = () => {
+  const { login,loading, error } = useLogin();
+
+  const onFinish = (values: { email: string; password: string }) => {
+    login(values.email, values.password);
+  };
+
+  return (
+    <div style={containerStyle}>
+
+      <div style={overlayStyle}></div>
+      <Card style={cardStyle}>
+        <Title level={2} style={{ marginBottom: 8, color: "#333" }}>
+          Welcome Back!
+        </Title>
+        <Text type="secondary" style={{ display: "block", marginBottom: 20 }}>
+          Please enter your login details to continue.
+        </Text>
+
+        {error && <Text type="danger">{error}</Text>}
+
+        <Form name="login" style={{ textAlign: "left" }} onFinish={onFinish} autoComplete="off">
+          <Form.Item name="email" rules={[{ required: true, message: "Please enter your email!" }]}>
+            <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
+          </Form.Item>
+
+          <Form.Item name="password" rules={[{ required: true, message: "Please enter your password!" }]}>
+            <Input.Password prefix={<LockOutlined />} placeholder="Password" size="large" />
+          </Form.Item>
+
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item>
+             <Button type="primary" htmlType="submit" block size="large" loading={loading}>
+                Login 
+            </Button>
+            </Form.Item>
+
+        </Form>
+
+        <Text type="secondary">
+          Don't have an account? <a href="/register">Sign Up</a>
+        </Text>
+      </Card>
+    </div>
+  );
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+export default Login;
 
 const containerStyle: React.CSSProperties = {
   height: "100vh",
@@ -50,58 +89,3 @@ const cardStyle: React.CSSProperties = {
   position: "relative",
   zIndex: 2, 
 };
-
-const Login: React.FC = () => {
-  return (
-    <div style={containerStyle}>
-      <div style={overlayStyle}></div> 
-      <Card style={cardStyle}>
-        <Title level={2} style={{ marginBottom: 8, color: "#333" }}>
-          Welcome Back!
-        </Title>
-        <Text type="secondary" style={{ display: "block", marginBottom: 20 }}>
-          Please enter your login details to continue.
-        </Text>
-
-        <Form
-          name="login"
-          style={{ textAlign: "left" }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item<FieldType>
-            name="email"
-            rules={[{ required: true, message: "Please enter your email!" }]}
-          >
-            <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            name="password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
-          >
-            <Input.Password prefix={<LockOutlined />} placeholder="Password" size="large" />
-          </Form.Item>
-
-          <Form.Item<FieldType> name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block size="large">
-              Log In
-            </Button>
-          </Form.Item>
-        </Form>
-
-        <Text type="secondary">
-          Don't have an account? <a href="/register">Sign Up</a>
-        </Text>
-      </Card>
-    </div>
-  );
-};
-
-export default Login;

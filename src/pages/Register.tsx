@@ -1,25 +1,10 @@
 import React from "react";
-import type { FormProps } from "antd";
-import { Button, Card, Checkbox, Form, Input, Typography } from "antd";
+import { Button, Card, Checkbox, Form, Input, Typography, message } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import useRegister from "../hooks/useRegister";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
-
-type FieldType = {
-  username?: string;
-  email?: string;
-  fullname?: string;
-  password?: string;
-  remember?: string;
-};
-
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
 
 const containerStyle: React.CSSProperties = {
   height: "100vh",
@@ -27,7 +12,7 @@ const containerStyle: React.CSSProperties = {
   justifyContent: "center",
   alignItems: "center",
   padding: "20px",
-  background: "url('https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg') center/cover no-repeat", 
+  background: "url('https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg') center/cover no-repeat",
   position: "relative",
   overflow: "hidden",
 };
@@ -38,13 +23,12 @@ const overlayStyle: React.CSSProperties = {
   left: 0,
   width: "100%",
   height: "100%",
-  background: "rgba(0, 0, 0, 0.5)", 
+  background: "rgba(0, 0, 0, 0.5)",
 };
-
 
 const cardStyle: React.CSSProperties = {
   width: "100%",
-  maxWidth: 400, 
+  maxWidth: 400,
   padding: 24,
   borderRadius: 16,
   background: "#ffffff",
@@ -55,9 +39,20 @@ const cardStyle: React.CSSProperties = {
 };
 
 const Register: React.FC = () => {
+  const { register, loading, error } = useRegister();
+  const navigate = useNavigate();
+
+  const onFinish = async (values: { fullname: string; email: string; password: string }) => {
+    const result = await register(values);
+    if (result) {
+      message.success("Registration successful! Redirecting...");
+      navigate("/login");
+    }
+  };
+
   return (
     <div style={containerStyle}>
-      <div style={overlayStyle}></div> 
+      <div style={overlayStyle}></div>
       <Card style={cardStyle}>
         <Title level={2} style={{ marginBottom: 8, color: "#333" }}>
           Create an Account
@@ -66,42 +61,39 @@ const Register: React.FC = () => {
           Sign up to join our community
         </Text>
 
-        
-        <Form
-          name="register"
-          style={{ textAlign: "left" }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item<FieldType>
+        <Form name="register" style={{ textAlign: "left" }} onFinish={onFinish} autoComplete="off">
+          <Form.Item
             name="fullname"
             rules={[{ required: true, message: "Please input your Fullname!" }]}
           >
             <Input prefix={<UserOutlined />} placeholder="Fullname" size="large" />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item
             name="email"
-            rules={[{ required: true, message: "Please input your Email!" }]}
+            rules={[
+              { required: true, message: "Please input your Email!" },
+              { type: "email", message: "Please enter a valid email address!" }, 
+            ]}
           >
             <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
             <Input.Password prefix={<LockOutlined />} placeholder="Password" size="large" />
           </Form.Item>
 
-          <Form.Item<FieldType> name="remember" valuePropName="checked">
+          <Form.Item name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
+          {error && <Text type="danger">{error}</Text>}
+
           <Form.Item>
-            <Button type="primary" htmlType="submit" block size="large" >
+            <Button type="primary" htmlType="submit" block size="large" loading={loading}>
               Sign Up
             </Button>
           </Form.Item>
