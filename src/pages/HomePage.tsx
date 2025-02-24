@@ -13,16 +13,17 @@ const HomePage: React.FC = () => {
   }, [refreshKey]);
 
   return (
-    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" ,background: "url('https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg') center/cover no-repeat",}}>
       <Header />
       <div
         style={{
           flex: 1,
           overflowY: "auto",
-          padding: "20px",
+          padding: "10px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+
         }}
       >
         {loading && <p>Loading topics...</p>}

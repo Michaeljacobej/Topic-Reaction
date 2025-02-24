@@ -10,8 +10,9 @@ interface TopicModalProps {
 }
 
 const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
+    const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
-  const { addTopic, loading, error } = useAddTopic();
+  const { addTopic, loading, error } = useAddTopic(messageApi);
 
   const handleOk = async () => {
     try {
@@ -41,7 +42,9 @@ const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
       ]}
       centered
     >
+      
       <Form form={form} layout="vertical">
+        {contextHolder} 
         <Form.Item label="Title" name="title" rules={[{ required: true, message: "Title is required" }]}>
           <Input placeholder="Enter topic title" />
         </Form.Item>

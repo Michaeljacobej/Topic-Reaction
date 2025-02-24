@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import Translate from "./pages/TranslateTest";
 import { RefreshProvider } from "./components/RefreshContext";
+import "antd/dist/reset.css"; 
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/login" replace /> }, 

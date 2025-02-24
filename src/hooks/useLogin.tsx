@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useRefresh } from "../components/RefreshContext";
 
-const useLogin = () => {
+
+const useLogin = (messageApi: any) => {
   const { triggerRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,12 +20,22 @@ const useLogin = () => {
         password,
       });
 
-      const token = response.data.output_schema;
-      localStorage.setItem("token", token); 
-      triggerRefresh(); 
-      navigate("/home"); 
+      const { error_schema, output_schema } = response.data;
+
+      if (error_schema?.error_code === "BOTR940-00-000" && output_schema) {
+        localStorage.setItem("token", output_schema);
+        triggerRefresh();
+        messageApi.success("Login successful! Redirecting...");
+
+        setTimeout(() => navigate("/home"), 1500);
+      } else {
+        const errorMessage = error_schema?.error_message?.english || "Login failed!";
+        messageApi.error(errorMessage);
+      }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed!");
+      const errorMessage = err.response?.data?.error_schema?.error_message?.english || "Login failed!";
+      setError(errorMessage);
+      messageApi.error(errorMessage);
     } finally {
       setLoading(false);
     }

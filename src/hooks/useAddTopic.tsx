@@ -2,9 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useRefresh } from "../components/RefreshContext";
 
-const useAddTopic = () => {
+const useAddTopic = (messageApi: any) => {
   const [loading, setLoading] = useState(false);
-  const { triggerRefresh } = useRefresh(); 
+  const { triggerRefresh } = useRefresh();
   const [error, setError] = useState<string | null>(null);
 
   const addTopic = async (title: string, description: string) => {
@@ -18,15 +18,26 @@ const useAddTopic = () => {
       const response = await axios.post(
         "http://localhost:8080/api/topics/add",
         { title, description },
-        { headers: { 
-           "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json; charset=UTF-8"
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+        }
       );
-      triggerRefresh(); 
+
+      triggerRefresh();
+
+      // Show success message
+      messageApi.success("Topic added successfully!");
+
       return response.data;
     } catch (err: any) {
-      setError(err.response?.data || "Failed to add topic.");
+      const errorMessage = err.response?.data || "Failed to add topic.";
+      setError(errorMessage);
+
+      // Show error message
+      messageApi.error(errorMessage);
     } finally {
       setLoading(false);
     }
