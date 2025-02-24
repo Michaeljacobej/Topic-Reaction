@@ -32,10 +32,13 @@ const HomePage: React.FC = () => {
           topics.map((topic) => (
             <ListTopic
               key={topic.topic_id}
+              topic_id={topic.topic_id}
               imageUrl="https://picsum.photos/300/200"
               title={topic.tittle}
               createdBy={topic.created_by}
               description={topic.description}
+              likes={topic.likes_count}
+              dislikes={topic.dislike_count}
             />
           ))
         ) : (

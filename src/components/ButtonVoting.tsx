@@ -1,32 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Row, Col, Typography, Space } from "antd";
 import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
+import { useVoteReaction } from "../hooks/useVoteReaction";
 
 const { Text } = Typography;
 
-const ButtonVotting: React.FC = () => {
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [selected, setSelected] = useState<"like" | "dislike" | null>(null);
+interface ButtonVotingProps {
+  postId: number;
+  likes: number;
+  dislikes: number;
+}
 
-  const totalVotes = likes + dislikes;
-  const likePercentage = totalVotes ? Math.round((likes / totalVotes) * 100) : 0;
-  const dislikePercentage = totalVotes ? Math.round((dislikes / totalVotes) * 100) : 0;
-
-  const handleLike = () => {
-    setLikes(likes + 1);
-    setSelected("like");
-  };
-
-  const handleDislike = () => {
-    setDislikes(dislikes + 1);
-    setSelected("dislike");
-  };
+const ButtonVoting: React.FC<ButtonVotingProps> = ({ postId, likes, dislikes }) => {
+  const { likePercentage, dislikePercentage, selected, handleLike, handleDislike } =
+    useVoteReaction(postId, likes, dislikes);
 
   return (
     <div style={{ padding: "20px", textAlign: "center" }}>
       <Row gutter={[16, 16]} align="middle" justify="center">
-        
         {/* Like Button */}
         <Col>
           <Space>
@@ -37,11 +28,11 @@ const ButtonVotting: React.FC = () => {
               size="large"
               onClick={handleLike}
               style={{
-                background: selected === "like" ? "#2E7D32" : "#4CAF50",
-                borderColor: selected === "like" ? "#2E7D32" : "#4CAF50",
+                background: selected === "LIKE" ? "#2E7D32" : "#4CAF50",
+                borderColor: selected === "LIKE" ? "#2E7D32" : "#4CAF50",
                 color: "#fff",
                 transition: "all 0.3s ease",
-                boxShadow: selected === "like" ? "0px 0px 12px rgba(76, 175, 80, 0.8)" : "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                boxShadow: selected === "LIKE" ? "0px 0px 12px rgba(76, 175, 80, 0.8)" : "0px 4px 10px rgba(0, 0, 0, 0.2)",
               }}
             >
               Like
@@ -72,11 +63,11 @@ const ButtonVotting: React.FC = () => {
               size="large"
               onClick={handleDislike}
               style={{
-                background: selected === "dislike" ? "#C62828" : "#F44336",
-                borderColor: selected === "dislike" ? "#C62828" : "#F44336",
+                background: selected === "DISLIKE" ? "#C62828" : "#F44336",
+                borderColor: selected === "DISLIKE" ? "#C62828" : "#F44336",
                 color: "#fff",
                 transition: "all 0.3s ease",
-                boxShadow: selected === "dislike" ? "0px 0px 12px rgba(244, 67, 54, 0.8)" : "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                boxShadow: selected === "DISLIKE" ? "0px 0px 12px rgba(244, 67, 54, 0.8)" : "0px 4px 10px rgba(0, 0, 0, 0.2)",
               }}
             >
               Dislike
@@ -101,4 +92,4 @@ const ButtonVotting: React.FC = () => {
   );
 };
 
-export default ButtonVotting;
+export default ButtonVoting;

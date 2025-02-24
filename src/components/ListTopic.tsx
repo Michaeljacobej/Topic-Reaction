@@ -1,17 +1,21 @@
 import React from "react";
 import { Row, Col, Card, Typography } from "antd";
-import ButtonVotting from "./ButtonVoting";
+
+import ButtonVoting from "./ButtonVoting";
 
 const { Title } = Typography;
 
 interface ListTopicProps {
+  topic_id: number;
   imageUrl: string;
   title: string;
   createdBy: string;
   description: string;
+  likes: number;
+  dislikes: number;
 }
 
-const ListTopic: React.FC<ListTopicProps> = ({ imageUrl, title, createdBy, description }) => {
+const ListTopic: React.FC<ListTopicProps> = ({ topic_id,likes,dislikes,imageUrl, title, createdBy, description }) => {
   return (
     <div style={{ padding: "20px", width: "100%", display: "flex", justifyContent: "center" }}>
       <Card
@@ -60,7 +64,7 @@ const ListTopic: React.FC<ListTopicProps> = ({ imageUrl, title, createdBy, descr
             </div>
 
             <div style={{ textAlign: "center", marginTop: "12px" }}>
-              <ButtonVotting />
+              <ButtonVoting postId={topic_id} likes={likes} dislikes={dislikes}/>
             </div>
           </Col>
         </Row>

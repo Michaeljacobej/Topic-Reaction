@@ -6,8 +6,8 @@ interface Topic {
     tittle: string;
     created_by: string;
   description: string;
-  likesCount: number;
-  dislikeCount: number;
+  likes_count: number;
+  dislike_count: number;
 }
 
 const useGetListTopics = () => {
