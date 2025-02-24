@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Row, Col, Typography, Space } from "antd";
+import { Button, Row, Col, Typography, Space, message } from "antd";
 import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
 import { useVoteReaction } from "../hooks/useVoteReaction";
 
@@ -12,11 +12,14 @@ interface ButtonVotingProps {
 }
 
 const ButtonVoting: React.FC<ButtonVotingProps> = ({ postId, likes, dislikes }) => {
+   const [messageApi, contextHolder] = message.useMessage();
+    
   const { likePercentage, dislikePercentage, selected, handleLike, handleDislike } =
-    useVoteReaction(postId, likes, dislikes);
+    useVoteReaction(postId, likes, dislikes,messageApi);
 
   return (
     <div style={{ padding: "20px", textAlign: "center" }}>
+       {contextHolder}
       <Row gutter={[16, 16]} align="middle" justify="center">
         {/* Like Button */}
         <Col>

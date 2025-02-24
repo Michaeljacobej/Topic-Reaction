@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRefresh } from "../components/RefreshContext";
 
-export const useVoteReaction = (topicId: number, likes: number, dislikes: number) => {
+export const useVoteReaction = (topicId: number, likes: number, dislikes: number,messageApi: any) => {
   const { triggerRefresh } = useRefresh();
   const [selected, setSelected] = useState<"LIKE" | "DISLIKE" | null>(null);
 
@@ -27,9 +27,16 @@ export const useVoteReaction = (topicId: number, likes: number, dislikes: number
         }
       );
 
-      if (response.status === 200) {
+      const { error_schema, output_schema } = response.data;
+
+
+      if (error_schema?.error_code === "BOTR940-00-000" && output_schema) {
+        
         setSelected(reactionType);
         triggerRefresh();
+      } else {
+        const errorMessage = error_schema?.error_message?.english || "Login failed!";
+        messageApi.error(errorMessage);
       }
     } catch (error) {
       console.error("Error voting:", error);

@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Card, Checkbox, Form, Input, Typography, message } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import useRegister from "../hooks/useRegister";
-import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -39,21 +38,17 @@ const cardStyle: React.CSSProperties = {
 };
 
 const Register: React.FC = () => {
-  const { register, loading, error } = useRegister();
-  const navigate = useNavigate();
+   const [messageApi, contextHolder] = message.useMessage();
+  const { register, loading, error } = useRegister(messageApi);
 
-  const onFinish = async (values: { fullname: string; email: string; password: string }) => {
-    const result = await register(values);
-    if (result) {
-      message.success("Registration successful! Redirecting...");
-      navigate("/login");
-    }
+  const onFinish =  (values: { fullname: string; email: string; password: string }) => {
+     register(values); 
   };
-
   return (
     <div style={containerStyle}>
       <div style={overlayStyle}></div>
       <Card style={cardStyle}>
+         {contextHolder}
         <Title level={2} style={{ marginBottom: 8, color: "#333" }}>
           Create an Account
         </Title>
