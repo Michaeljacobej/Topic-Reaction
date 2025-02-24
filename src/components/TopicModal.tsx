@@ -1,5 +1,7 @@
+
 import React from "react";
-import { Modal, Form, Input, Typography, Button } from "antd";
+import { Modal, Form, Input, Button, message } from "antd";
+import useAddTopic from "../hooks/useAddTopic";
 
 interface TopicModalProps {
   isVisible: boolean;
@@ -7,91 +9,45 @@ interface TopicModalProps {
   onSubmit: (values: { title: string; description: string }) => void;
 }
 
-const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose, onSubmit }) => {
+const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
   const [form] = Form.useForm();
+  const { addTopic, loading, error } = useAddTopic();
 
-  const handleOk = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        onSubmit(values);
-        form.resetFields();
-        onClose();
-      })
-      .catch((error) => console.log("Validation Failed:", error));
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      await addTopic(values.title, values.description);
+      message.success("Topic added successfully!");
+      form.resetFields();
+      onClose();
+    } catch (err) {
+      message.error(error || "Failed to add topic.");
+      console.log(err);
+    }
   };
 
   return (
     <Modal
-      title={
-        <Typography.Title
-          level={3}
-          style={{
-            textAlign: "center",
-            marginBottom: 0,
-            background: "linear-gradient(135deg, #4A90E2, #76B1E7)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          Add a New Topic
-        </Typography.Title>
-      }
+      title="Add a New Topic"
       open={isVisible}
       onCancel={onClose}
       footer={[
-        <Button key="cancel" onClick={onClose} style={{ borderRadius: "8px" }}>
+        <Button key="cancel" onClick={onClose}>
           Cancel
         </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          onClick={handleOk}
-          style={{
-            background: "linear-gradient(135deg, #4A90E2, #76B1E7)",
-            borderRadius: "8px",
-            fontWeight: "bold",
-          }}
-        >
+        <Button key="submit" type="primary" onClick={handleOk} loading={loading}>
           Submit
         </Button>,
       ]}
       centered
     >
-      <Form
-        form={form}
-        layout="vertical"
-        style={{ marginTop: "10px", padding: "10px" }}
-      >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Title is required" }]}
-        >
-          <Input
-            placeholder="Enter topic title"
-            style={{
-              borderRadius: "8px",
-              padding: "10px",
-              boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-            }}
-          />
+      <Form form={form} layout="vertical">
+        <Form.Item label="Title" name="title" rules={[{ required: true, message: "Title is required" }]}>
+          <Input placeholder="Enter topic title" />
         </Form.Item>
 
-        <Form.Item
-          label="Description"
-          name="description"
-          rules={[{ required: true, message: "Description is required" }]}
-        >
-          <Input.TextArea
-            rows={4}
-            placeholder="Enter topic description"
-            style={{
-              borderRadius: "8px",
-              padding: "10px",
-              boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-            }}
-          />
+        <Form.Item label="Description" name="description" rules={[{ required: true, message: "Description is required" }]}>
+          <Input.TextArea rows={4} placeholder="Enter topic description" />
         </Form.Item>
       </Form>
     </Modal>
@@ -99,3 +55,4 @@ const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose, onSubmit })
 };
 
 export default TopicModal;
+

@@ -17,7 +17,7 @@ const useLogin = () => {
         password,
       });
 
-      const token = response.data.token;
+      const token = response.data.output_schema;
       localStorage.setItem("token", token); 
 
       navigate("/home"); 
