@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useRefresh } from "../components/RefreshContext";
 
 const useLogin = () => {
+  const { triggerRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const useLogin = () => {
 
       const token = response.data.output_schema;
       localStorage.setItem("token", token); 
-
+      triggerRefresh(); 
       navigate("/home"); 
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed!");

@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import Translate from "./pages/TranslateTest";
+import { RefreshProvider } from "./components/RefreshContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/login" replace /> }, 
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <RefreshProvider>
+      <RouterProvider router={router} />
+    </RefreshProvider>
+  );
 };
 
 export default App;

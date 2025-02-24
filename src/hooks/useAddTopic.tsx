@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { useRefresh } from "../components/RefreshContext";
 
 const useAddTopic = () => {
   const [loading, setLoading] = useState(false);
+  const { triggerRefresh } = useRefresh(); 
   const [error, setError] = useState<string | null>(null);
 
   const addTopic = async (title: string, description: string) => {
@@ -18,10 +20,10 @@ const useAddTopic = () => {
         { title, description },
         { headers: { 
            "Authorization": `Bearer ${token}`,
-             "Content-Type": "application/json; charset=UTF-8"
+            "Content-Type": "application/json; charset=UTF-8"
         }}
       );
-
+      triggerRefresh(); 
       return response.data;
     } catch (err: any) {
       setError(err.response?.data || "Failed to add topic.");
