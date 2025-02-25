@@ -21,7 +21,7 @@ This project is built using **React**, **TypeScript**, and **Vite**, with **Ant 
 - **UI Framework:** Ant Design (Antd)
 - **State Management:** React Hooks
 - **Internationalization:** React-i18next
-- **Styling:** Tailwind CSS (if applicable) / Custom Ant Design Styles
+- **Styling:** Custom Ant Design Styles
 
 ## 📦 Installation
 1. Clone the repository:
