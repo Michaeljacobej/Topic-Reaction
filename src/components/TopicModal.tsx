@@ -2,6 +2,7 @@
 import React from "react";
 import { Modal, Form, Input, Button, message } from "antd";
 import useAddTopic from "../hooks/useAddTopic";
+import { useTranslation } from "react-i18next";
 
 interface TopicModalProps {
   isVisible: boolean;
@@ -10,7 +11,8 @@ interface TopicModalProps {
 }
 
 const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
-    const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { t , i18n} = useTranslation();
   const [form] = Form.useForm();
   const { addTopic, loading, error } = useAddTopic(messageApi);
 
@@ -29,15 +31,18 @@ const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
 
   return (
     <Modal
-      title="Add a New Topic"
+      key={i18n.language}
+      title={t("addNewTopic")}
       open={isVisible}
       onCancel={onClose}
       footer={[
         <Button key="cancel" onClick={onClose}>
-          Cancel
+          {t("cancel")}
+
         </Button>,
         <Button key="submit" type="primary" onClick={handleOk} loading={loading}>
-          Submit
+          {t("submit")}
+         
         </Button>,
       ]}
       centered
@@ -45,13 +50,22 @@ const TopicModal: React.FC<TopicModalProps> = ({ isVisible, onClose }) => {
       
       <Form form={form} layout="vertical">
         {contextHolder} 
-        <Form.Item label="Title" name="title" rules={[{ required: true, message: "Title is required" }]}>
-          <Input placeholder="Enter topic title" />
-        </Form.Item>
+        <Form.Item
+            label={t("title")}
+            name="title"
+            rules={[{ required: true, message: t("titleRequired") }]}
+          >
+            <Input placeholder={t("enterTitle")} />
+          </Form.Item>
 
-        <Form.Item label="Description" name="description" rules={[{ required: true, message: "Description is required" }]}>
-          <Input.TextArea rows={4} placeholder="Enter topic description" />
-        </Form.Item>
+
+          <Form.Item
+            label={t("description")}
+            name="description"
+            rules={[{ required: true, message: t("descriptionRequired") }]}
+          >
+            <Input.TextArea rows={4} placeholder={t("enterDescription")} />
+          </Form.Item>
       </Form>
     </Modal>
   );

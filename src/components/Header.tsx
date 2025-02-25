@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import { Typography, Button, Switch, Flex, Grid } from "antd";
 import { PlusOutlined, LogoutOutlined } from "@ant-design/icons";
 import TopicModal from "./TopicModal";
-import useLogout from "../hooks/useLogout"; // Import useLogout
+import useLogout from "../hooks/useLogout";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 const { useBreakpoint } = Grid;
 
 const Header: React.FC = () => {
-  const [language, setLanguage] = useState("en");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const screens = useBreakpoint();
   const { logout } = useLogout();
-
-  const handleLanguageChange = (checked: boolean) => {
-    setLanguage(checked ? "it" : "en");
-  };
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
 
   const showModal = () => setIsModalVisible(true);
   const handleClose = () => setIsModalVisible(false);
@@ -23,6 +21,12 @@ const Header: React.FC = () => {
   const handleSubmit = (values: { title: string; description: string }) => {
     console.log("Submitted:", values);
     setIsModalVisible(false);
+  };
+
+  const switchLanguage = (checked: boolean) => {
+    const newLang = checked ? "it" : "en";
+    i18n.changeLanguage(newLang);
+    setLanguage(newLang);
   };
 
   return (
@@ -54,7 +58,7 @@ const Header: React.FC = () => {
             marginLeft: "10px",
           }}
         >
-          📌 List of Topics
+          📌 {t("listOfTopic")}
         </Title>
 
         <Flex align="center" gap={screens.xs ? 10 : 15}>
@@ -72,18 +76,18 @@ const Header: React.FC = () => {
             className="hover-scale"
             onClick={showModal}
           >
-            {!screens.xs && "Add Topic"}
+            {!screens.xs && t("addTopic")}
           </Button>
 
           <Switch
-            checked={language === "it"}
+            checked={i18n.language === "it"}
             checkedChildren="IT"
             unCheckedChildren="EN"
-            onChange={handleLanguageChange}
+            onChange={switchLanguage}
             style={{
               width: screens.xs ? "50px" : "70px",
               height: "30px",
-              background: language === "it"
+              background: i18n.language === "it"
                 ? "linear-gradient(135deg, #064635, #0B8457)"
                 : "linear-gradient(135deg, #bbb, #888)",
               border: "none",
@@ -110,14 +114,14 @@ const Header: React.FC = () => {
               marginRight: "20px",
             }}
             className="hover-scale"
-            onClick={logout} 
+            onClick={logout}
           >
-            {!screens.xs && "Logout"}
+            {!screens.xs && t("logout")}
           </Button>
         </Flex>
       </div>
 
-      <TopicModal isVisible={isModalVisible} onClose={handleClose} onSubmit={handleSubmit} />
+      <TopicModal key={language} isVisible={isModalVisible} onClose={handleClose} onSubmit={handleSubmit} />
     </>
   );
 };

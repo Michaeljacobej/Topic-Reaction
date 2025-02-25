@@ -1,36 +1,42 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    fallbackLng: "en-US",
-    supportedLngs: ["en-US", "it-IT"], 
-    interpolation: {
-      escapeValue: false,
+const resources = {
+  en: {
+    translation: {
+      addNewTopic: "Add a New Topic",
+      cancel: "Cancel",
+      submit: "Submit",
+      title: "Title",
+      description: "Description",
+      titleRequired: "Title is required",
+      descriptionRequired: "Description is required",
+      enterTitle: "Enter topic title",
+      enterDescription: "Enter topic description",
+      listOfTopic: "List of Topics",
     },
-    resources: {
-      "en-US": {
-        translation: {
-          hello_welcome: "Hello, welcome!",
-          switch_language: "Switch to Italian",
-          example_text: "This is an example text.",
-        },
-      },
-      "it-IT": {
-        translation: {
-          hello_welcome: "Ciao, benvenuto!",
-          switch_language: "Passa all'inglese",
-          example_text: "Questo è un testo di esempio.",
-        },
-      },
+  },
+  it: {
+    translation: {
+      addNewTopic: "Aggiungi un Nuovo Argomento",
+      cancel: "Annulla",
+      submit: "Invia",
+      title: "Titolo",
+      description: "Descrizione",
+      titleRequired: "Il titolo è obbligatorio",
+      descriptionRequired: "La descrizione è obbligatoria",
+      enterTitle: "Inserisci il titolo dell'argomento",
+      enterDescription: "Inserisci la descrizione dell'argomento",
+      listOfTopic: "Elenco degli Argomenti",
     },
-    detection: {
-      order: ["navigator", "localStorage", "sessionStorage", "cookie"],
-      caches: ["localStorage", "cookie"],
-    },
-  });
+  },
+};
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: "en",
+  fallbackLng: "en",
+  interpolation: { escapeValue: false },
+});
 
 export default i18n;

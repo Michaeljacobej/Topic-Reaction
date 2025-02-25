@@ -8,8 +8,10 @@ const HomePage: React.FC = () => {
   const { topics, loading, error, refreshTopics } = useGetListTopics();
   const { refreshKey } = useRefresh();
 
+
   useEffect(() => {
     refreshTopics();
+ 
   }, [refreshKey]);
 
   return (
