@@ -1,63 +1,93 @@
-# React + TypeScript + Vite + Ant Design
+# 📝 Topic Management System
 
-## 🚀 Project Overview
-This project is built using **React**, **TypeScript**, and **Vite**, with **Ant Design** as the UI framework. It provides a seamless and interactive experience for users to create and rate topics while supporting multi-language accessibility.
+## 📌 Overview
+This project is a **React + TypeScript + Vite** application with **Ant Design (Antd)** for the frontend, and a **Spring Boot + Spring Security** backend using **PostgreSQL** as the database. The system allows users to create topics, provide feedback through ratings, and ensures a fair voting mechanism with daily limits.
+
+---
+
+## 🏗 Tech Stack
+
+### 🌐 Frontend
+- **React** (Vite + TypeScript)
+- **Ant Design (Antd)**
+- **i18next** (for multilingual support)
+- **Axios** (for API requests)
+
+### 🔧 Backend
+- **Spring Boot** (REST API)
+- **Spring Security** (for authentication & authorization)
+- **PostgreSQL** (database)
+- **JWT Authentication**
+- **Lombok** (to reduce boilerplate code)
+- **Flyway** (for database migration)
+
+---
 
 ## 🎯 Project Goals
-1. **💡 User Engagement**
-   - Enable users to create topics and participate in discussions interactively.
+1. 💡 **User Engagement:** Enable users to create topics and interact through ratings.
+2. 🎯 **Feedback Mechanism:** Showcase like/dislike percentages for topics.
+3. 🚫 **Limit User Actions:** Implement daily vote limits to ensure balanced participation.
+4. 🌍 **Accessibility:** Support **English** and **Italian** languages for broader reach.
 
-2. **🎯 Feedback Mechanism**
-   - Display like/dislike percentages to provide insights on topic reception.
+---
 
-3. **🚫 Limit User Actions**
-   - Implement daily voting limits to ensure balanced participation.
+## 🚀 Features
+- 📝 **Topic Creation:** Users can add new topics.
+- 👍👎 **Topic Ratings:** Users can upvote or downvote topics.
+- 📊 **Feedback Display:** View real-time percentage of likes/dislikes.
+- 🔄 **Daily Vote Limit:** Prevent excessive voting to maintain fairness.
+- 🌍 **Multilingual Support:** English & Italian translations available.
+- 🔒 **Secure Authentication:** User login and role-based access control.
 
-4. **🌍 Accessibility**
-   - Support both **English** and **Italian** languages for a broader audience.
+---
 
-## 🛠️ Tech Stack
-- **Frontend:** React + TypeScript + Vite
-- **UI Framework:** Ant Design (Antd)
-- **State Management:** React Hooks
-- **Internationalization:** React-i18next
-- **Styling:** Custom Ant Design Styles
-
-## 📦 Installation
+## 🛠 Setup & Installation
+### 📦 Frontend
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo.git
-   cd your-repo
+   git clone https://github.com/your-repo/topic-management.git
    ```
-2. Install dependencies:
+2. Navigate to the frontend directory:
+   ```sh
+   cd frontend
+   ```
+3. Install dependencies:
    ```sh
    npm install
    ```
-3. Run the development server:
+4. Run the application:
    ```sh
    npm run dev
    ```
 
-## 🌍 Language Support
-This project supports **English** and **Italian** using **i18n**.
-- **Switch languages** via a toggle button in the UI.
+### 🖥 Backend
+1. Navigate to the backend directory:
+   ```sh
+   cd backend
+   ```
+2. Build the project:
+   ```sh
+   mvn clean install
+   ```
+3. Run the Spring Boot application:
+   ```sh
+   mvn spring-boot:run
+   ```
 
-## 🔥 Features
-- Create new topics with a title and description.
-- Like and dislike functionality with percentage calculations.
-- Daily voting limits for fair participation.
-- Multi-language support (English & Italian).
-- Responsive UI with Ant Design components.
+---
 
-## 🚀 Deployment
-To build the project for production:
-```sh
-npm run build
-```
+## 🌎 Localization (i18n)
+This project supports **English** and **Italian** translations using `i18next`. To change the language, switch using the toggle in the UI.
 
-## 🤝 Contributing
-Feel free to submit pull requests or report issues. Contributions are welcome!
+---
 
-## 📜 License
-MIT License.
+## 📄 License
+This project is licensed under the MIT License.
+
+---
+
+## 📩 Contact
+If you have any questions or suggestions, feel free to reach out via email at **michaeljacob6789@gmail.com**.
+
+Happy Coding! 🚀
 
